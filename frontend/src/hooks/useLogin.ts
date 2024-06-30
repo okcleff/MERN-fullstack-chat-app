@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext';
+import { IUserResponse } from '../types/user';
 
 function handleInputErrors(username: string, password: string) {
   if (!username || !password) {
@@ -23,19 +24,23 @@ const useLogin = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/auth/login`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
-      const data = await res.json();
+      const data: IUserResponse = await res.json();
       if (!data.result) {
-        throw new Error(data.error);
+        throw new Error(data.message);
       }
 
-      localStorage.setItem('chat-user', JSON.stringify(data));
-      setAuthUser(data);
+      localStorage.setItem('chat-user', JSON.stringify(data.data));
+
+      setAuthUser(data.data);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

@@ -1,25 +1,22 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface AuthUser {
-  // Define the structure of your auth user object here
-  // For example:
+interface IAuthUser {
   _id: string;
   username: string;
   fullName: string;
   profilePic: string;
-  // Add other properties as needed
 }
 
-interface AuthContextType {
-  authUser: AuthUser | null;
-  setAuthUser: React.Dispatch<React.SetStateAction<AuthUser | null>>;
+interface IAuthContextType {
+  authUser: IAuthUser | null;
+  setAuthUser: React.Dispatch<React.SetStateAction<IAuthUser | null>>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
+export const AuthContext = createContext<IAuthContextType | undefined>(
   undefined
 );
 
-export const useAuthContext = (): AuthContextType => {
+export const useAuthContext = (): IAuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error(
@@ -36,7 +33,7 @@ interface AuthContextProviderProps {
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
   children,
 }) => {
-  const [authUser, setAuthUser] = useState<AuthUser | null>(() => {
+  const [authUser, setAuthUser] = useState<IAuthUser | null>(() => {
     const storedUser = localStorage.getItem('chat-user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
