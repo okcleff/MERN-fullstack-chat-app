@@ -10,7 +10,8 @@ const generateTokenAndSetCookie = (userId, res) => {
   res.cookie('accessToken', token, {
     maxAge: EXPIRING_DAYS * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
+    // sameSite: 'strict',
     secure: process.env.NODE_ENV !== 'development',
   });
 };
