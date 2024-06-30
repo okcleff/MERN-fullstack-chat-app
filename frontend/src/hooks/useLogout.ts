@@ -1,48 +1,36 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext';
-import { IUserResponse } from '../types/user';
+import { ILogoutResponse } from '../types/user';
 
-function handleInputErrors(username: string, password: string) {
-  if (!username || !password) {
-    toast.error('Please fill in all fields');
-    return false;
-  }
-
-  return true;
-}
-
-const useLogin = () => {
+const useLogout = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
 
-  const login = async (username: string, password: string) => {
-    const success = handleInputErrors(username, password);
-
-    if (!success) return;
-
+  const logout = async () => {
     setLoading(true);
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/auth/login`,
+        `${import.meta.env.VITE_APP_API_URL}/auth/logout`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password }),
           credentials: 'include',
         }
       );
 
-      const data: IUserResponse = await res.json();
+      const data: ILogoutResponse = await res.json();
 
       if (!data.result) {
         throw new Error(data.message);
       }
 
-      localStorage.setItem('chat-user', JSON.stringify(data.data));
+      localStorage.removeItem('chat-user');
 
-      setAuthUser(data.data);
+      setAuthUser(null);
+
+      toast.success(data.message);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -54,7 +42,7 @@ const useLogin = () => {
     }
   };
 
-  return { loading, login };
+  return { loading, logout };
 };
 
-export default useLogin;
+export default useLogout;
