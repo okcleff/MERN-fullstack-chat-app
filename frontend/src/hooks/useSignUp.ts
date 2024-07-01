@@ -60,20 +60,17 @@ const useSignUp = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/auth/signup`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fullName,
-            username,
-            password,
-            confirmPassword,
-            gender,
-          }),
-        }
-      );
+      const res = await fetch(`/api/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName,
+          username,
+          password,
+          confirmPassword,
+          gender,
+        }),
+      });
 
       const data: IUserResponse = await res.json();
       if (!data.result) {

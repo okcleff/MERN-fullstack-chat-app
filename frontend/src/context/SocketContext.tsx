@@ -1,4 +1,3 @@
-import io, { Socket } from 'socket.io-client';
 import React, {
   createContext,
   useState,
@@ -6,6 +5,7 @@ import React, {
   useContext,
   ReactNode,
 } from 'react';
+import io, { Socket } from 'socket.io-client';
 import { useAuthContext } from './AuthContext';
 
 interface ISocketContext {
@@ -25,11 +25,11 @@ export const useSocketContext = (): ISocketContext => {
   return context;
 };
 
-interface SocketContextProviderProps {
+interface ISocketContextProviderProps {
   children: ReactNode;
 }
 
-export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
+export const SocketContextProvider: React.FC<ISocketContextProviderProps> = ({
   children,
 }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -38,7 +38,8 @@ export const SocketContextProvider: React.FC<SocketContextProviderProps> = ({
 
   useEffect(() => {
     if (authUser) {
-      const newSocket = io('http://localhost:5173', {
+      // backend url
+      const newSocket = io('http://localhost:8000', {
         query: {
           userId: authUser._id,
         },

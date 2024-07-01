@@ -5,9 +5,7 @@ import Login from './pages/login/Login';
 import SignUp from './pages/signUp/SignUp';
 import { useAuthContext } from './context/AuthContext';
 
-import './App.css';
-
-function App() {
+const App = () => {
   const { authUser } = useAuthContext();
 
   return (
@@ -29,6 +27,6 @@ function App() {
       <Toaster />
     </div>
   );
-}
+};
 
 export default App;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import useConversation from '../zustand/useConversation';
+import { IGetMessagesResponse } from '../types/message';
 
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
@@ -11,18 +12,15 @@ const useGetMessages = () => {
       setLoading(true);
 
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_APP_API_URL}/messages/${
-            selectedConversation?._id
-          }`,
-          { credentials: 'include' }
-        );
+        const res = await fetch(`/api/messages/${selectedConversation?._id}`, {
+          credentials: 'include',
+        });
 
-        const data = await res.json();
+        const data: IGetMessagesResponse = await res.json();
 
-        if (data.error) throw new Error(data.error);
+        if (!data.result) throw new Error(data.message);
 
-        setMessages(data);
+        setMessages(data.messages);
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message);

@@ -12,3 +12,9 @@ export interface ISendMessageResponse {
   newMessage: IMessage;
   message: string;
 }
+
+export interface IGetMessagesResponse {
+  result: boolean;
+  messages: IMessage[];
+  message: string;
+}
