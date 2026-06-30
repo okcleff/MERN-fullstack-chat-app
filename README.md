@@ -132,6 +132,9 @@ cp frontend/.env.example frontend/.env
 | `CLIENT_URL` | backend | Socket.IO CORS 허용 origin (예: `http://localhost:3000`) |
 | `VITE_SOCKET_URL` | frontend | Socket 서버 주소 (기본 `http://localhost:8000`) |
 
+> **백엔드 env 로딩 방식**: 백엔드는 `backend/loadEnv.js`에서 파일 위치 기준 절대 경로로 `backend/.env`를 읽습니다.
+> 덕분에 서버를 어디서 실행하든(루트에서 `npm run server` 등 `process.cwd()`와 무관하게) 항상 `backend/.env`를 불러오므로, 백엔드 환경 변수는 **반드시 `backend/.env`** 에 둡니다. (프론트엔드 env는 Vite 규칙에 따라 `frontend/.env`)
+
 ### 3. 실행
 
 터미널 두 개에서 각각 실행합니다.
