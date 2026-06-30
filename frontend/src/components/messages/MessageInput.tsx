@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BsSend } from 'react-icons/bs';
 import useSendMessage from '../../hooks/useSendMessage';
+import Spinner from '../Spinner';
 
 const MessageInput = () => {
   const [message, setMessage] = useState('');
@@ -17,24 +18,21 @@ const MessageInput = () => {
   };
 
   return (
-    <form className="px-4 my-3" onSubmit={handleSubmit}>
-      <div className="w-full relative">
+    <form className="px-4 py-3 border-t border-line" onSubmit={handleSubmit}>
+      <div className="flex items-center gap-2">
         <input
           type="text"
-          className="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 text-white"
-          placeholder="Send a message"
+          className="flex-1 bg-paper rounded-full px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand/30 transition"
+          placeholder="Type a message…"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
           type="submit"
-          className="absolute inset-y-0 end-0 flex items-center pe-3"
+          disabled={loading}
+          className="shrink-0 w-10 h-10 grid place-items-center rounded-full bg-brand text-brand-ink hover:brightness-105 active:scale-95 transition disabled:opacity-60"
         >
-          {loading ? (
-            <div className="loading loading-spinner"></div>
-          ) : (
-            <BsSend />
-          )}
+          {loading ? <Spinner /> : <BsSend className="w-4 h-4" />}
         </button>
       </div>
     </form>

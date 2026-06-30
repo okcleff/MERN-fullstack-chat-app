@@ -1,33 +1,64 @@
 @import 'tailwindcss';
-@plugin 'daisyui';
 
-body {
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-    url('/bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+/* ── Design tokens (Modern light) ─────────────────────────── */
+@theme {
+  --color-paper: #f3f4f6;
+  --color-surface: #ffffff;
+  --color-ink: #16181d;
+  --color-muted: #71757e;
+  --color-line: #e6e8ec;
+  --color-brand: #2f6bff;
+  --color-brand-ink: #ffffff;
+  --color-online: #22c55e;
+
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* dark mode looking scrollbar */
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ── Entrance animation ───────────────────────────────────── */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* ── Scrollbar (light) ────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #555;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #121212;
+  background: var(--color-line);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #242424;
+  background: #d8d2c5;
 }
 
-/* SHAKE ANIMATION ON HORIZONTAL DIRECTION */
+/* ── Shake animation on new message ───────────────────────── */
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.2s both;
   transform: translate3d(0, 0, 0);

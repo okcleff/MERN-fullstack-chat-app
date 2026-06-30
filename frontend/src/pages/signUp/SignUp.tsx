@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useSignUp from '../../hooks/useSignUp';
 import GenderCheckbox from '../../components/signUp/GenderCheckBox';
+import Spinner from '../../components/Spinner';
+
+const inputClass =
+  'w-full bg-transparent border-0 border-b border-line pb-2 text-ink placeholder:text-muted/50 focus:outline-none focus:border-brand transition-colors';
+const labelClass =
+  'block text-[11px] font-medium uppercase tracking-[0.15em] text-muted mb-2';
 
 const SignUp = () => {
   const [inputs, setInputs] = useState({
@@ -24,100 +30,101 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
-      <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
-        <h1 className="text-3xl font-semibold text-center text-gray-300">
-          Sign Up <span className="text-blue-500"> ChatApp</span>
+    <div className="w-full max-w-sm">
+      <div className="mb-8 rise" style={{ animationDelay: '0ms' }}>
+        <span className="font-display text-sm tracking-wide text-muted">
+          ✦ ChatApp
+        </span>
+        <h1 className="font-display text-5xl leading-[1.05] text-ink mt-5">
+          Create
+          <br />
+          account.
         </h1>
+        <p className="text-muted mt-3 text-sm">
+          Join the conversation in a few seconds.
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="label p-2">
-              <span className="text-base label-text">Full Name</span>
-            </label>
-            <input
-              type="text"
-              placeholder="John Doe"
-              className="w-full input input-bordered  h-10"
-              value={inputs.fullName}
-              onChange={(e) =>
-                setInputs({ ...inputs, fullName: e.target.value })
-              }
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="rise" style={{ animationDelay: '80ms' }}>
+          <label className={labelClass}>Full name</label>
+          <input
+            type="text"
+            placeholder="John Doe"
+            className={inputClass}
+            value={inputs.fullName}
+            onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
+          />
+        </div>
 
-          <div>
-            <label className="label p-2 ">
-              <span className="text-base label-text">Username</span>
-            </label>
-            <input
-              type="text"
-              placeholder="johndoe"
-              className="w-full input input-bordered h-10"
-              value={inputs.username}
-              onChange={(e) =>
-                setInputs({ ...inputs, username: e.target.value })
-              }
-            />
-          </div>
+        <div className="rise" style={{ animationDelay: '130ms' }}>
+          <label className={labelClass}>Username</label>
+          <input
+            type="text"
+            placeholder="johndoe"
+            className={inputClass}
+            value={inputs.username}
+            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+          />
+        </div>
 
-          <div>
-            <label className="label p-2">
-              <span className="text-base label-text">Password</span>
-            </label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="w-full input input-bordered h-10"
-              value={inputs.password}
-              onChange={(e) =>
-                setInputs({ ...inputs, password: e.target.value })
-              }
-            />
-          </div>
+        <div className="rise" style={{ animationDelay: '180ms' }}>
+          <label className={labelClass}>Password</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            className={inputClass}
+            value={inputs.password}
+            onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+          />
+        </div>
 
-          <div>
-            <label className="label p-2">
-              <span className="text-base label-text">Confirm Password</span>
-            </label>
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className="w-full input input-bordered h-10"
-              value={inputs.confirmPassword}
-              onChange={(e) =>
-                setInputs({ ...inputs, confirmPassword: e.target.value })
-              }
-            />
-          </div>
+        <div className="rise" style={{ animationDelay: '230ms' }}>
+          <label className={labelClass}>Confirm password</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            className={inputClass}
+            value={inputs.confirmPassword}
+            onChange={(e) =>
+              setInputs({ ...inputs, confirmPassword: e.target.value })
+            }
+          />
+        </div>
 
+        <div className="rise" style={{ animationDelay: '280ms' }}>
+          <label className={labelClass}>Gender</label>
           <GenderCheckbox
             onCheckboxChange={handleCheckboxChange}
             selectedGender={inputs.gender}
           />
+        </div>
 
-          <Link
-            to={'/login'}
-            className="text-sm hover:underline hover:text-blue-600 mt-2 inline-block"
+        <div className="rise pt-2" style={{ animationDelay: '330ms' }}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-brand text-brand-ink rounded-full py-3.5 text-sm font-medium tracking-wide hover:brightness-105 active:scale-[0.99] transition disabled:opacity-60 flex items-center justify-center"
           >
-            Already have an account?
-          </Link>
+            {loading ? <Spinner /> : 'Create account'}
+          </button>
+        </div>
+      </form>
 
-          <div>
-            <button
-              className="btn btn-block btn-sm mt-16 border border-slate-700"
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                'Sign Up'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
+      <p
+        className="text-sm text-muted mt-7 rise"
+        style={{ animationDelay: '380ms' }}
+      >
+        Already have an account?{' '}
+        <Link
+          to="/login"
+          className="text-ink underline underline-offset-4 decoration-brand hover:text-brand transition-colors"
+        >
+          Log in
+        </Link>
+      </p>
     </div>
   );
 };
+
 export default SignUp;

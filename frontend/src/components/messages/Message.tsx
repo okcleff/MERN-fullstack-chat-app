@@ -7,32 +7,42 @@ import { IMessage } from '../../types/message';
 const Message: React.FC<{ message: IMessage }> = ({ message }) => {
   const { authUser } = useAuthContext();
   const { selectedConversation } = useConversation();
+
   const fromMe = message.senderId === authUser?._id;
   const formattedTime = extractTime(message.createdAt);
-  const chatClassName = fromMe ? 'chat-end' : 'chat-start';
   const profilePic = fromMe
-    ? authUser.profilePic
+    ? authUser?.profilePic
     : selectedConversation?.profilePic;
-  const bubbleBgColor = fromMe ? 'bg-blue-500' : '';
 
   const shakeClass = message.shouldShake ? 'shake' : '';
 
+  const bubbleClass = fromMe
+    ? 'bg-brand text-brand-ink rounded-2xl rounded-br-md'
+    : 'bg-paper text-ink rounded-2xl rounded-bl-md';
+
   return (
-    <div className={`chat ${chatClassName}`}>
-      <div className="chat-image avatar">
-        <div className="w-10 rounded-full">
-          <img alt="Tailwind CSS chat bubble component" src={profilePic} />
+    <div className={`flex flex-col ${fromMe ? 'items-end' : 'items-start'}`}>
+      <div className="flex items-end gap-2 max-w-[78%]">
+        {!fromMe && (
+          <img
+            src={profilePic}
+            alt=""
+            className="w-7 h-7 rounded-full object-cover bg-paper shrink-0"
+          />
+        )}
+        <div
+          className={`px-3.5 py-2 text-sm leading-relaxed break-words ${bubbleClass} ${shakeClass}`}
+        >
+          {message.message}
         </div>
       </div>
-      <div
-        className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} pb-2`}
+      <span
+        className={`text-[10px] text-muted mt-1 ${fromMe ? 'pr-1' : 'pl-9'}`}
       >
-        {message.message}
-      </div>
-      <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
         {formattedTime}
-      </div>
+      </span>
     </div>
   );
 };
+
 export default Message;

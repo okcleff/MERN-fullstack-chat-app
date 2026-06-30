@@ -7,13 +7,16 @@ import Messages from './Messages';
 
 const NoChatSelected = () => {
   const { authUser } = useAuthContext();
+  const firstName = authUser?.fullName?.split(' ')[0] || 'there';
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
-      <div className="px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2">
-        <p>Welcome 👋 {authUser?.fullName || ''} ❄</p>
-        <p>Select a chat to start messaging</p>
-        <TiMessages className="text-3xl md:text-6xl text-center" />
+    <div className="flex flex-1 items-center justify-center p-8">
+      <div className="text-center">
+        <TiMessages className="mx-auto text-5xl text-line mb-5" />
+        <h2 className="font-display text-3xl text-ink">Hello, {firstName} 👋</h2>
+        <p className="text-muted mt-2 text-sm">
+          Select a conversation to start messaging.
+        </p>
       </div>
     </div>
   );
@@ -27,14 +30,16 @@ const MessageContainer = () => {
   }, [setSelectedConversation]);
 
   return (
-    <div className="md:min-w-[450px] flex flex-col">
+    <div className="flex-1 flex flex-col min-w-0">
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
-          <div className="bg-slate-500 px-4 py-2 mb-2">
-            <span className="label-text">To:</span>{' '}
-            <span className="text-gray-900 font-bold">
+          <div className="px-5 py-4 border-b border-line flex items-center gap-2">
+            <span className="text-xs uppercase tracking-wider text-muted">
+              To
+            </span>
+            <span className="font-display font-semibold text-ink">
               {selectedConversation.fullName}
             </span>
           </div>
@@ -45,4 +50,5 @@ const MessageContainer = () => {
     </div>
   );
 };
+
 export default MessageContainer;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
+import Spinner from '../../components/Spinner';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -14,58 +15,74 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
-      <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
-        <h1 className="text-3xl font-semibold text-center text-gray-300">
-          Login
-          <span className="text-blue-500"> ChatApp</span>
+    <div className="w-full max-w-sm">
+      {/* 브랜드 + 에디토리얼 헤더 */}
+      <div className="mb-10 rise" style={{ animationDelay: '0ms' }}>
+        <span className="font-display text-sm tracking-wide text-muted">
+          ✦ ChatApp
+        </span>
+        <h1 className="font-display text-5xl leading-[1.05] text-ink mt-5">
+          Welcome
+          <br />
+          back.
         </h1>
-
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="label p-2">
-              <span className="text-base label-text">Username</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Enter username"
-              className="w-full input input-bordered h-10"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label className="label p-2">
-              <span className="text-base label-text">Password</span>
-            </label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="w-full input input-bordered h-10"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <Link
-            to="/signup"
-            className="text-sm hover:underline hover:text-blue-600 mt-2 inline-block"
-          >
-            Don't have an account?
-          </Link>
-
-          <div>
-            <button className="btn btn-block btn-sm mt-16" disabled={loading}>
-              {loading ? (
-                <span className="loading loading-spinner "></span>
-              ) : (
-                'Login'
-              )}
-            </button>
-          </div>
-        </form>
+        <p className="text-muted mt-3 text-sm">
+          Pick up the conversation where you left off.
+        </p>
       </div>
+
+      <form onSubmit={handleSubmit} className="space-y-7">
+        <div className="rise" style={{ animationDelay: '90ms' }}>
+          <label className="block text-[11px] font-medium uppercase tracking-[0.15em] text-muted mb-2">
+            Username
+          </label>
+          <input
+            type="text"
+            placeholder="johndoe"
+            className="w-full bg-transparent border-0 border-b border-line pb-2 text-ink placeholder:text-muted/50 focus:outline-none focus:border-brand transition-colors"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        <div className="rise" style={{ animationDelay: '150ms' }}>
+          <label className="block text-[11px] font-medium uppercase tracking-[0.15em] text-muted mb-2">
+            Password
+          </label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            className="w-full bg-transparent border-0 border-b border-line pb-2 text-ink placeholder:text-muted/50 focus:outline-none focus:border-brand transition-colors"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <div className="rise pt-3" style={{ animationDelay: '210ms' }}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-brand text-brand-ink rounded-full py-3.5 text-sm font-medium tracking-wide hover:brightness-105 active:scale-[0.99] transition disabled:opacity-60 flex items-center justify-center"
+          >
+            {loading ? <Spinner /> : 'Log in'}
+          </button>
+        </div>
+      </form>
+
+      <p
+        className="text-sm text-muted mt-8 rise"
+        style={{ animationDelay: '270ms' }}
+      >
+        New here?{' '}
+        <Link
+          to="/signup"
+          className="text-ink underline underline-offset-4 decoration-brand hover:text-brand transition-colors"
+        >
+          Create an account
+        </Link>
+      </p>
     </div>
   );
 };
+
 export default Login;
