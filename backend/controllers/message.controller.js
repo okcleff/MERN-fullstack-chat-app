@@ -36,10 +36,10 @@ export const sendMessage = async (req, res) => {
       io.to(receiverSocketId).emit('newMessage', newMessage);
     }
 
-    res.status(201).json({ result: true, newMessage });
+    res.status(201).json({ result: true, data: newMessage });
   } catch (error) {
     console.log('Error in sendMessage controller: ', error.message);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ result: false, message: 'Internal server error' });
   }
 };
 
@@ -53,13 +53,13 @@ export const getMessages = async (req, res) => {
     }).populate('messages'); // NOT REFERENCE BUT ACTUAL MESSAGES
 
     if (!conversation)
-      return res.status(200).json({ result: true, messages: [] });
+      return res.status(200).json({ result: true, data: [] });
 
     const messages = conversation.messages;
 
-    res.status(200).json({ result: true, messages });
+    res.status(200).json({ result: true, data: messages });
   } catch (error) {
     console.log('Error in getMessages controller: ', error.message);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ result: false, message: 'Internal server error' });
   }
 };

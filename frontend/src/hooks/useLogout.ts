@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext';
-import { ILogoutResponse } from '../types/user';
+import { apiClient, getErrorMessage } from '../utils/apiClient';
 
 const useLogout = () => {
   const [loading, setLoading] = useState(false);
@@ -11,29 +11,13 @@ const useLogout = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/auth/logout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-
-      const data: ILogoutResponse = await res.json();
-
-      if (!data.result) {
-        throw new Error(data.message);
-      }
+      await apiClient('/api/auth/logout', { method: 'POST' });
 
       localStorage.removeItem('chat-user');
-
       setAuthUser(null);
-
-      toast.success(data.message);
+      toast.success('로그아웃되었습니다');
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error('An unknown error occurred');
-      }
+      toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }

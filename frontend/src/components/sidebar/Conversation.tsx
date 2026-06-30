@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSocketContext } from '../../context/SocketContext';
 import useConversation from '../../zustand/useConversation';
+import { getRandomEmoji } from '../../utils/emojis';
 import { IUserInfo } from '../../types/user';
 
 interface IConversationProps {
   conversation: IUserInfo;
   isLastIdx: boolean;
-  emoji: string;
 }
 
 const Conversation: React.FC<IConversationProps> = ({
   conversation,
   isLastIdx,
-  emoji,
 }) => {
   const { onlineUsers } = useSocketContext();
   const { selectedConversation, setSelectedConversation } = useConversation();
 
   const isSelected = selectedConversation?._id === conversation._id;
   const isOnline = onlineUsers.includes(conversation._id);
+  // 대화 상대별로 고정된 이모지 (리렌더 시 깜빡이지 않도록 _id 기준 메모이즈)
+  const emoji = useMemo(() => getRandomEmoji(), [conversation._id]);
 
   return (
     <>

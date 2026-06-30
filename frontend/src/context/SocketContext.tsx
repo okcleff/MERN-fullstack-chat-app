@@ -38,8 +38,9 @@ export const SocketContextProvider: React.FC<ISocketContextProviderProps> = ({
 
   useEffect(() => {
     if (authUser) {
-      // backend url
-      const newSocket = io('http://localhost:8000', {
+      const socketUrl =
+        import.meta.env.VITE_SOCKET_URL || 'http://localhost:8000';
+      const newSocket = io(socketUrl, {
         query: {
           userId: authUser._id,
         },

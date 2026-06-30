@@ -1,17 +1,17 @@
 {
   "name": "mern-chat-app",
   "version": "1.0.0",
-  "main": "backend/server.ts",
+  "main": "backend/server.js",
   "scripts": {
-    "server": "nodemon backend/server.js"
+    "server": "nodemon backend/server.js",
+    "start": "node backend/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "MERN stack 기반 socket.io 실시간 채팅 웹앱",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "body-parser": "^2.3.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

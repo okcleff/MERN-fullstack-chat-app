@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import useConversation from '../zustand/useConversation';
-import { IGetMessagesResponse } from '../types/message';
+import { IMessage } from '../types/message';
+import { apiClient, getErrorMessage } from '../utils/apiClient';
 
 const useGetMessages = () => {
   const [loading, setLoading] = useState(false);
@@ -10,23 +11,13 @@ const useGetMessages = () => {
   useEffect(() => {
     const getMessages = async () => {
       setLoading(true);
-
       try {
-        const res = await fetch(`/api/messages/${selectedConversation?._id}`, {
-          credentials: 'include',
-        });
-
-        const data: IGetMessagesResponse = await res.json();
-
-        if (!data.result) throw new Error(data.message);
-
-        setMessages(data.messages);
+        const data = await apiClient<IMessage[]>(
+          `/api/messages/${selectedConversation?._id}`
+        );
+        setMessages(data);
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message);
-        } else {
-          toast.error('An unknown error occurred');
-        }
+        toast.error(getErrorMessage(error));
       } finally {
         setLoading(false);
       }

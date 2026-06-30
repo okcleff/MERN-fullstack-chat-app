@@ -1,38 +1,29 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useConversation from '../zustand/useConversation';
-import { ISendMessageResponse } from '../types/message';
+import { IMessage } from '../types/message';
+import { apiClient, getErrorMessage } from '../utils/apiClient';
 
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
-  const { messages, setMessages, selectedConversation } = useConversation();
+  const { selectedConversation, addMessage } = useConversation();
 
   const sendMessage = async (message: string) => {
+    if (!selectedConversation?._id) return;
+
     setLoading(true);
     try {
-      const res = await fetch(
-        `/api/messages/send/${selectedConversation?._id || ''}`,
+      const newMessage = await apiClient<IMessage>(
+        `/api/messages/send/${selectedConversation._id}`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({ message }),
-          credentials: 'include',
         }
       );
 
-      const data: ISendMessageResponse = await res.json();
-
-      if (!data.result) throw new Error(data.message);
-
-      setMessages([...messages, data.newMessage]);
+      addMessage(newMessage);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error('An unknown error occurred');
-      }
+      toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -40,4 +31,5 @@ const useSendMessage = () => {
 
   return { sendMessage, loading };
 };
+
 export default useSendMessage;

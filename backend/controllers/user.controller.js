@@ -8,9 +8,9 @@ export const getUsersForSidebar = async (req, res) => {
       _id: { $ne: loggedInUserId },
     }).select('-password');
 
-    res.status(200).json({ result: true, filteredUsers });
+    res.status(200).json({ result: true, data: filteredUsers });
   } catch (error) {
     console.error('Error in getUsersForSidebar: ', error.message);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ result: false, message: 'Internal server error' });
   }
 };

@@ -11,8 +11,7 @@ const generateTokenAndSetCookie = (userId, res) => {
     maxAge: EXPIRING_DAYS * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
     sameSite: 'lax',
-    // sameSite: 'strict',
-    secure: process.env.NODE_ENV !== 'development',
+    secure: process.env.NODE_ENV === 'production',
   });
 };
 

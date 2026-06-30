@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext';
-import { IUserResponse } from '../types/user';
+import { IUserInfo } from '../types/user';
+import { apiClient, getErrorMessage } from '../utils/apiClient';
 
 function handleInputErrors(username: string, password: string) {
   if (!username || !password) {
@@ -24,28 +25,15 @@ const useLogin = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/auth/login`, {
+      const user = await apiClient<IUserInfo>('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
-        credentials: 'include',
       });
 
-      const data: IUserResponse = await res.json();
-
-      if (!data.result) {
-        throw new Error(data.message);
-      }
-
-      localStorage.setItem('chat-user', JSON.stringify(data.data));
-
-      setAuthUser(data.data);
+      localStorage.setItem('chat-user', JSON.stringify(user));
+      setAuthUser(user);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error('An unknown error occurred');
-      }
+      toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
