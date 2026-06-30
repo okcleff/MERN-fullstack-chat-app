@@ -2,9 +2,9 @@ import React from 'react';
 import { useAuthContext } from '../../context/AuthContext';
 import { extractTime } from '../../utils/extractTime';
 import useConversation from '../../zustand/useConversation';
-import { IMessage } from '../../types/message';
+import { IChatMessage } from '../../types/message';
 
-const Message: React.FC<{ message: IMessage }> = ({ message }) => {
+const Message: React.FC<{ message: IChatMessage }> = ({ message }) => {
   const { authUser } = useAuthContext();
   const { selectedConversation } = useConversation();
 

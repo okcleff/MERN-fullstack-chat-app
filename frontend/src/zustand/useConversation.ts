@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import toast from 'react-hot-toast';
 import { IUserInfo } from '../types/user';
-import { IMessage } from '../types/message';
+import { IChatMessage } from '../types/message';
 import { apiClient, getErrorMessage } from '../utils/apiClient';
 
 interface IConversationStore {
@@ -15,9 +15,9 @@ interface IConversationStore {
   setSelectedConversation: (selectedConversation: IUserInfo | null) => void;
 
   // 현재 대화의 메시지 목록
-  messages: IMessage[];
-  setMessages: (messages: IMessage[]) => void;
-  addMessage: (message: IMessage) => void;
+  messages: IChatMessage[];
+  setMessages: (messages: IChatMessage[]) => void;
+  addMessage: (message: IChatMessage) => void;
 }
 
 const useConversation = create<IConversationStore>((set, get) => ({

@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext';
 import { IUserInfo } from '../types/user';
-import { apiClient, getErrorMessage } from '../utils/apiClient';
+import { apiClient } from '../utils/apiClient';
+import { useAsyncAction } from './useAsyncAction';
 
 function handleInputErrors(username: string, password: string) {
   if (!username || !password) {
@@ -14,29 +14,20 @@ function handleInputErrors(username: string, password: string) {
 }
 
 const useLogin = () => {
-  const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { loading, run } = useAsyncAction();
+  const { login: setLoggedInUser } = useAuthContext();
 
   const login = async (username: string, password: string) => {
-    const success = handleInputErrors(username, password);
+    if (!handleInputErrors(username, password)) return;
 
-    if (!success) return;
-
-    setLoading(true);
-
-    try {
+    await run(async () => {
       const user = await apiClient<IUserInfo>('/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
 
-      localStorage.setItem('chat-user', JSON.stringify(user));
-      setAuthUser(user);
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-    } finally {
-      setLoading(false);
-    }
+      setLoggedInUser(user);
+    });
   };
 
   return { loading, login };

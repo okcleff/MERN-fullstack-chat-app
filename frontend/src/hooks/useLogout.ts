@@ -1,26 +1,19 @@
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../context/AuthContext';
-import { apiClient, getErrorMessage } from '../utils/apiClient';
+import { apiClient } from '../utils/apiClient';
+import { useAsyncAction } from './useAsyncAction';
 
 const useLogout = () => {
-  const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { loading, run } = useAsyncAction();
+  const { logout: clearLoggedInUser } = useAuthContext();
 
   const logout = async () => {
-    setLoading(true);
-
-    try {
+    await run(async () => {
       await apiClient('/api/auth/logout', { method: 'POST' });
 
-      localStorage.removeItem('chat-user');
-      setAuthUser(null);
+      clearLoggedInUser();
       toast.success('로그아웃되었습니다');
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return { loading, logout };

@@ -1,18 +1,16 @@
-import { useState } from 'react';
-import toast from 'react-hot-toast';
 import useConversation from '../zustand/useConversation';
 import { IMessage } from '../types/message';
-import { apiClient, getErrorMessage } from '../utils/apiClient';
+import { apiClient } from '../utils/apiClient';
+import { useAsyncAction } from './useAsyncAction';
 
 const useSendMessage = () => {
-  const [loading, setLoading] = useState(false);
+  const { loading, run } = useAsyncAction();
   const { selectedConversation, addMessage } = useConversation();
 
   const sendMessage = async (message: string) => {
     if (!selectedConversation?._id) return;
 
-    setLoading(true);
-    try {
+    await run(async () => {
       const newMessage = await apiClient<IMessage>(
         `/api/messages/send/${selectedConversation._id}`,
         {
@@ -22,11 +20,7 @@ const useSendMessage = () => {
       );
 
       addMessage(newMessage);
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   return { sendMessage, loading };
